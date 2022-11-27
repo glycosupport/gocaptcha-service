@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+
+    <title>gocaptcha</title>
+
+    <style>
+
+       
+
+    </style>
+</head>
+<body>
+    <div class="app">
+
+        <div class="circles">
+            <div id="circles-group-1">
+                <div class="circle" id="circle-1"></div>
+                <div class="circle" id="circle-2"></div>
+            </div>
+
+            <div id="circles-group-2">
+                <div class="circle" id="circle-3"></div>
+                <div class="circle" id="circle-4"></div>
+            </div>
+        </div>
+
+        <div class="frame">
+
+            <div class="captcha-form">
+                <div id="captcha-image"></div>
+                <div id="captcha-info">
+                    <div class="captcha-path">
+                        <a href="#">0a069a1449fab9a3eb92dccd16a8f867</a>
+                    </div>
+
+                    <div class="input-form" id="verify">
+                        <input id="input-form" name="source" type="text" placeholder="CODE" required>
+                    </div>
+                    
+                    <div class="captcha-info-btns">
+                        <button onclick="verify()">VERIFY</button>
+                        <button onclick="generate()">GENERATE</button>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div id="settings">
+                <div class="ranges">
+                    <div class="range-wrap">
+                        <div class="range-text">Length</div>
+                        
+                        <div class="range-with-value">
+                            <div class="ragne">
+                                <input type="range" min='0' max='100' step='1' value="6"
+                                oninput="rangeLength(this.value)" onchange="rangeLength(this.value)">
+                            </div>
+                            <div class="range-value">100</div>
+                        </div>
+                    </div>
+    
+                    <div class="range-wrap">
+                        <div class="range-text">Noise</div>
+                        
+                        <div class="range-with-value">
+                            <div class="ragne">
+                                <input type="range" min='0' max='100' step='1' value="0"
+                                oninput="rangeNoise(this.value)" onchange="rangeNoise(this.value)">
+                            </div>
+                            <div class="range-value">100</div>
+                        </div>
+                    </div>
+    
+                    <div class="range-wrap">
+                        <div class="range-text">Lines</div>
+                        
+                        <div class="range-with-value">
+                            <div class="ragne">
+                                <input type="range" min='0' max='100' step='1' value="3"
+                                oninput="rangeLines(this.value)" onchange="rangeLines(this.value)">
+                            </div>
+                            <div class="range-value">100</div>
+                        </div>
+                    </div>
+    
+                    <div class="range-wrap">
+                        <div class="range-text">Width</div>
+                        
+                        <div class="range-with-value">
+                            <div class="ragne">
+                                <input type="range" min='20' max='480' step='1' value="240"
+                                oninput="rangeWidth(this.value)" onchange="rangeWidth(this.value)">
+                            </div>
+                            <div class="range-value">100</div>
+                        </div>
+                    </div>
+    
+                    <div class="range-wrap">
+                        <div class="range-text">Height</div>
+                        
+                        <div class="range-with-value">
+                            <div class="ragne">
+                                <input type="range" min='20' max='180' step='1' value="60"
+                                oninput="rangeHeight(this.value)" onchange="rangeHeight(this.value)">
+                            </div>
+                            <div class="range-value">100</div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="check-boxes">
+    
+                    <div id="fonts-group-1">
+                        <div class="check-box">
+                            <input type="checkbox" id="abduction" onchange="addFont('abduction.ttf', this)">
+                            <label for="abduction"></label>
+                            <div class="check-box-text">abduction</div>
+                        </div>
+                        
+                        <div class="check-box">
+                            <input type="checkbox" id="dotmartrix" onchange="addFont('dotmartrix.ttf', this)">
+                            <label for="dotmartrix"></label>
+                            <div class="check-box-text">dotmartrix</div>
+                        </div>
+            
+                        <div class="check-box">
+                            <input type="checkbox" id="hacked" onchange="addFont('hacked.ttf', this)">
+                            <label for="hacked"></label>
+                            <div class="check-box-text">hacked</div>
+                        </div>
+            
+                        <div class="check-box">
+                            <input type="checkbox" id="heartless" onchange="addFont('heartless.ttf', this)">
+                            <label for="heartless"></label>
+                            <div class="check-box-text">heartless</div>
+                        </div>
+    
+                        <div class="check-box">
+                            <input type="checkbox" id="linebeam" onchange="addFont('linebeam.ttf', this)">
+                            <label for="linebeam"></label>
+                            <div class="check-box-text">linebeam</div>
+                        </div>
+    
+                        <div class="check-box">
+                            <input type="checkbox" id="modular" onchange="addFont('modular.ttf', this)">
+                            <label for="modular"></label>
+                            <div class="check-box-text">modular</div>
+                        </div>
+    
+                    </div>
+    
+    
+                    <div id="fonts-group-2">
+                        <div class="check-box">
+                            <input type="checkbox" id="neonize" onchange="addFont('neonize.ttf', this)">
+                            <label for="neonize"></label>
+                            <div class="check-box-text">neonize</div>
+                        </div>
+                        
+                        <div class="check-box">
+                            <input type="checkbox" id="positive" onchange="addFont('positive.ttf', this)">
+                            <label for="positive"></label>
+                            <div class="check-box-text">positive</div>
+                        </div>
+            
+                        <div class="check-box">
+                            <input type="checkbox" id="tourner" onchange="addFont('tourner.ttf', this)">
+                            <label for="tourner"></label>
+                            <div class="check-box-text">tourner</div>
+                        </div>
+            
+                        <div class="check-box">
+                            <input type="checkbox" id="vogue" onchange="addFont('vogue.ttf', this)" checked>
+                            <label for="vogue"></label>
+                            <div class="check-box-text">vogue</div>
+                        </div>
+    
+                        <div class="check-box">
+                            <input type="checkbox" id="perspect" onchange="addFont('perspect.ttf', this)">
+                            <label for="perspect"></label>
+                            <div class="check-box-text">perspect</div>
+                        </div>
+    
+                        <div class="check-box">
+                            <input type="checkbox" id="cubic" onchange="addFont('cubic.ttf', this)">
+                            <label for="cubic"></label>
+                            <div class="check-box-text">cubic</div>
+                        </div>
+    
+                    </div>
+                </div>
+
+                <div class="input-forms">
+                    <div class="input-form" id="source">
+                        <div class="input-form-text">SOURCE</div>
+                        <input id="input-form" name="source" placeholder="123456789" type="text" required>
+                        <span class="underline"></span>
+                    </div>
+    
+                    <div class="input-form" id="R">
+                        <div class="input-form-text">R</div>
+                        <input id="input-form" name="R" placeholder="0-255" type="text" required>
+                        <span class="underline"></span>
+                    </div>
+                    
+                    <div class="input-form" id="G">
+                        <div class="input-form-text">G</div>
+                        <input id="input-form" name="G" placeholder="0-255" type="text" required>
+                        <span class="underline"></span>
+                    </div>
+    
+                    <div class="input-form" id="B">
+                        <div class="input-form-text">B</div>
+                        <input id="input-form" name="B" placeholder="0-255" type="text" required>
+                        <span class="underline"></span>
+                    </div>
+    
+                    <div class="input-form" id="A">
+                        <div class="input-form-text">A</div>
+                        <input id="input-form" name="A" placeholder="0-255" type="text" required>
+                        <span class="underline"></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="menu">
+                <div class="radio">
+                    <input class="medium" type="radio" name="menu" onclick="changeMenu()">
+                    <div class="radio-text">Math</div>
+                </div>
+
+                <div class="radio">
+                    <input class="medium" type="radio" name="menu" checked onclick="changeMenu()">
+                    <div class="radio-text">String</div>
+                </div>
+
+                <div class="radio">
+                    <input class="medium" type="radio" name="menu" onclick="changeMenu()">
+                    <div class="radio-text">Digits</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+</body>
+</html>

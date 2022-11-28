@@ -1,8 +1,17 @@
 
 # gocaptcha-service :green_heart:
 
-Custom captcha generation service in golang language 
+Captcha generation and verification service in Go
 
+- Installation [https://github.com/glycosupport/gocaptcha-service#installation]
+
+- Run Locally [https://github.com/glycosupport/gocaptcha-service#run-locally]
+
+- API Reference [https://github.com/glycosupport/gocaptcha-service#api-reference]
+
+- Description [https://github.com/glycosupport/gocaptcha-service#description]
+
+- Tech Stack [https://github.com/glycosupport/gocaptcha-service#tech-stack]
 
 ## Installation
 
@@ -126,7 +135,13 @@ Example: http://localhost:8080/remove/5a5e1f5ecc6d0b8ac4443172561d8acb.png
 
 ## Description
 
-![Main Frame]()
+![Main Frame](https://raw.githubusercontent.com/glycosupport/gocaptcha-service/dev/screenshots/frame.png)
+
+
+
+![Gin Requests](https://raw.githubusercontent.com/glycosupport/gocaptcha-service/dev/screenshots/frame.png)
+
+
 ## Tech Stack
 
 **Client:** HTML, CSS, JS

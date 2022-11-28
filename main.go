@@ -102,22 +102,16 @@ func (cs *captchaServer) getCaptchaHandler(c *gin.Context) {
 
 func (cs *captchaServer) removeCaptchaHandler(c *gin.Context) {
 
-	type RequestRemove struct {
-		Hash string `json:hash`
-	}
+	name := c.Param("name")
 
-	jsonData, err := ioutil.ReadAll(c.Request.Body)
-	if err != nil {
-		c.String(http.StatusBadRequest, err.Error())
+	e := os.Remove("./captchas/" + name)
+
+	if e != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"remove": "false"})
 		return
 	}
 
-	defer c.Request.Body.Close()
-
-	var request RequestRemove
-
-	json.Unmarshal(jsonData, &request)
-
+	c.JSON(http.StatusOK, gin.H{"remove": "true"})
 }
 
 func main() {
@@ -154,7 +148,7 @@ func main() {
 
 	router.POST("/custom", server.generateCustomCaptchaHandler)
 	router.POST("/verify", server.verifyCaptchaHandler)
-	router.POST("/remove/:name", server.removeCaptchaHandler)
+	router.GET("/remove/:name", server.removeCaptchaHandler)
 
 	router.GET("/generate", server.generateCaptchaHandler)
 	router.GET("/:name", server.getCaptchaHandler)

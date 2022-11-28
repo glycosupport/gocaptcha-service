@@ -129,7 +129,7 @@ Response:
 #### Remove captcha from server
 
 ```
-  POST /remove/:name
+  GET /remove/:name
 ```
 
 Example: http://localhost:8080/remove/5a5e1f5ecc6d0b8ac4443172561d8acb.png

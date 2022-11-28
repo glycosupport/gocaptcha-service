@@ -3,15 +3,15 @@
 
 Captcha generation and verification service in Go
 
-- Installation [https://github.com/glycosupport/gocaptcha-service#installation]
+- [Installation](https://github.com/glycosupport/gocaptcha-service#installation)
 
-- Run Locally [https://github.com/glycosupport/gocaptcha-service#run-locally]
+- [Run Locally](https://github.com/glycosupport/gocaptcha-service#run-locally)
 
-- API Reference [https://github.com/glycosupport/gocaptcha-service#api-reference]
+- [API Reference](https://github.com/glycosupport/gocaptcha-service#api-reference)
 
-- Description [https://github.com/glycosupport/gocaptcha-service#description]
+- [Description](https://github.com/glycosupport/gocaptcha-service#description)
 
-- Tech Stack [https://github.com/glycosupport/gocaptcha-service#tech-stack]
+- [Tech Stack](https://github.com/glycosupport/gocaptcha-service#tech-stack)
 
 ## Installation
 

@@ -16,7 +16,6 @@
 </head>
 <body>
     <div class="app">
-
         <div class="circles">
             <div id="circles-group-1">
                 <div class="circle" id="circle-1"></div>
@@ -30,7 +29,6 @@
         </div>
 
         <div class="frame">
-
             <div class="captcha-form">
                 <div id="captcha-image"></div>
                 <div id="captcha-info">
@@ -49,10 +47,9 @@
                 </div>
             </div>
             
-
             <div id="settings">
                 <div class="ranges">
-                    <div class="range-wrap">
+                    <div class="range-wrap" id="length">
                         <div class="range-text">Length</div>
                         
                         <div class="range-with-value">
@@ -60,11 +57,11 @@
                                 <input type="range" min='0' max='100' step='1' value="6"
                                 oninput="rangeLength(this.value)" onchange="rangeLength(this.value)">
                             </div>
-                            <div class="range-value">100</div>
+                            <div class="range-value" id="range-length">6</div>
                         </div>
                     </div>
     
-                    <div class="range-wrap">
+                    <div class="range-wrap" id="noise">
                         <div class="range-text">Noise</div>
                         
                         <div class="range-with-value">
@@ -72,11 +69,11 @@
                                 <input type="range" min='0' max='100' step='1' value="0"
                                 oninput="rangeNoise(this.value)" onchange="rangeNoise(this.value)">
                             </div>
-                            <div class="range-value">100</div>
+                            <div class="range-value" id="range-noise">0</div>
                         </div>
                     </div>
     
-                    <div class="range-wrap">
+                    <div class="range-wrap" id="lines">
                         <div class="range-text">Lines</div>
                         
                         <div class="range-with-value">
@@ -84,11 +81,11 @@
                                 <input type="range" min='0' max='100' step='1' value="3"
                                 oninput="rangeLines(this.value)" onchange="rangeLines(this.value)">
                             </div>
-                            <div class="range-value">100</div>
+                            <div class="range-value" id="range-lines">3</div>
                         </div>
                     </div>
     
-                    <div class="range-wrap">
+                    <div class="range-wrap" id="width">
                         <div class="range-text">Width</div>
                         
                         <div class="range-with-value">
@@ -96,11 +93,11 @@
                                 <input type="range" min='20' max='480' step='1' value="240"
                                 oninput="rangeWidth(this.value)" onchange="rangeWidth(this.value)">
                             </div>
-                            <div class="range-value">100</div>
+                            <div class="range-value" id="range-width">240</div>
                         </div>
                     </div>
     
-                    <div class="range-wrap">
+                    <div class="range-wrap" id="height">
                         <div class="range-text">Height</div>
                         
                         <div class="range-with-value">
@@ -108,9 +105,34 @@
                                 <input type="range" min='20' max='180' step='1' value="60"
                                 oninput="rangeHeight(this.value)" onchange="rangeHeight(this.value)">
                             </div>
-                            <div class="range-value">100</div>
+                            <div class="range-value" id="range-height">60</div>
                         </div>
                     </div>
+
+                    <div class="range-wrap" id="skew" style="display:none">
+                        <div class="range-text">Skew</div>
+                        
+                        <div class="range-with-value">
+                            <div class="ragne">
+                                <input type="range" min='0' max='10' step='0.5' value="0"
+                                oninput="rangeSkew(this.value)" onchange="rangeSkew(this.value)">
+                            </div>
+                            <div class="range-value" id="range-skew">0</div>
+                        </div>
+                    </div>
+
+                    <div class="range-wrap" id="dots" style="display:none">
+                        <div class="range-text">Dots</div>
+                        
+                        <div class="range-with-value">
+                            <div class="ragne">
+                                <input type="range" min='0' max='100' step='1' value="0"
+                                oninput="rangeDots(this.value)" onchange="rangeDots(this.value)">
+                            </div>
+                            <div class="range-value" id="range-dots">0</div>
+                        </div>
+                    </div>
+
                 </div>
     
                 <div class="check-boxes">
@@ -231,17 +253,17 @@
 
             <div class="menu">
                 <div class="radio">
-                    <input class="medium" type="radio" name="menu" onclick="changeMenu()">
+                    <input id="r1" class="medium" type="radio" name="menu" onclick="changeMenu()">
                     <div class="radio-text">Math</div>
                 </div>
 
                 <div class="radio">
-                    <input class="medium" type="radio" name="menu" checked onclick="changeMenu()">
+                    <input id="r2" class="medium" type="radio" name="menu" checked onclick="changeMenu()">
                     <div class="radio-text">String</div>
                 </div>
 
                 <div class="radio">
-                    <input class="medium" type="radio" name="menu" onclick="changeMenu()">
+                    <input id="r3" class="medium" type="radio" name="menu" onclick="changeMenu()">
                     <div class="radio-text">Digits</div>
                 </div>
             </div>

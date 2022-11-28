@@ -43,7 +43,7 @@ function getCustom() {
 }
 
 function generate() {
-
+    getCustom()
 }
 
 function verify() {
@@ -67,14 +67,84 @@ function verify() {
     }
 }
 
+function changeMenuToString() {
+
+    document.querySelector('.check-boxes').style.display="flex"
+    document.querySelector('.input-forms').style.display="flex"
+
+    document.querySelector('#noise').style.display = "block"
+    document.querySelector('#lines').style.display = "block"
+
+    document.querySelector('#skew').style.display="none"
+    document.querySelector('#dots').style.display="none"
+
+    document.querySelector('.input-forms #source').style.display="block"
+
+    document.querySelector('#length').style.display = "block"
+
+    config.mode="string"
+    getCustom()
+}
+
+function changeMenuToDigits() {
+    // Height   int
+	// Width    int
+	// Length   int
+	// MaxSkew  float64
+	// DotCount int
+
+    // check-boxes
+
+    // input-forms
+
+    document.querySelector('.check-boxes').style.display="none"
+    document.querySelector('.input-forms').style.display="none"
+
+    document.querySelector('#noise').style.display = "none"
+    document.querySelector('#lines').style.display = "none"
+
+    document.querySelector('#skew').style.display="block"
+    document.querySelector('#dots').style.display="block"
+
+    config.mode="digits"
+    getCustom()
+}
+
+function changeMenuToMath() {
+
+    document.querySelector('.check-boxes').style.display="flex"
+    document.querySelector('.input-forms').style.display="flex"
+
+    document.querySelector('#noise').style.display = "block"
+    document.querySelector('#lines').style.display = "block"
+
+    document.querySelector('#skew').style.display="none"
+    document.querySelector('#dots').style.display="none"
+
+    document.querySelector('#length').style.display = "none"
+    document.querySelector('.input-forms #source').style.display = "none"
+
+    config.mode="math"
+    getCustom()
+
+    // range-noise-wrap
+    // .input-forms #source
+    // .ragnes #range-length-wrap
+}
+
 function changeMenu() {
 
-    var r1 = document.querySelector('.menu #r1')
-    var r2 = document.querySelector('.menu #r2')
-    var r3 = document.querySelector('.menu #r3')
+    var r1 = document.querySelector('.menu #r1').checked
+    var r2 = document.querySelector('.menu #r2').checked
+    var r3 = document.querySelector('.menu #r3').checked
 
-    console.log(r1.checked, r2.checked, r3.checked)
-
+    if (r1) {
+        changeMenuToMath()
+    } else if (r2) {
+        changeMenuToString()
+    } else if (r3) {
+        changeMenuToDigits()
+    }
 }
 
 function addFont(fontName, element) {
@@ -88,35 +158,42 @@ function addFont(fontName, element) {
 
 function rangeLength(newVal) {
     config.length = +newVal
+    document.querySelector('#range-length').textContent = newVal
     getCustom()
 }
 
 function rangeNoise(newVal) {
     config.noise = +newVal
+    document.querySelector('#range-noise').textContent = newVal
     getCustom()
 }
 
 function rangeLines(newVal) {
     config.lines = +newVal
+    document.querySelector('#range-lines').textContent= newVal
     getCustom()
 }
 
 function rangeWidth(newVal) {
     config.width = +newVal
+    document.querySelector('#range-width').textContent = newVal
     getCustom()
 }
 
 function rangeHeight(newVal) {
     config.height = +newVal
+    document.querySelector('#range-height').textContent = newVal
     getCustom()
 }
 
 function rangeSkew(newVal) {
     config.skew = +newVal
+    document.querySelector('#range-skew').textContent = newVal
     getCustom()
 }
 
 function rangeDots(newVal) {
     config.dots = +newVal
+    document.querySelector('#range-dots').textContent = newVal
     getCustom()
 }

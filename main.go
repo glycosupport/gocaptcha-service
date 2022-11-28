@@ -147,6 +147,8 @@ func main() {
 
 	addr = ip + ":" + port
 
+	gin.SetMode(gin.DebugMode)
+
 	router.Use(static.Serve("/", static.LocalFile("./client/", true)))
 	router.StaticFile("/favicon.ico", "./assets/favicon.ico")
 

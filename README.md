@@ -190,6 +190,129 @@ The following security methods are used in the "digits" module:
 
 The "math" module uses the same security methods as the "string" module. For additional protection, a method is used where it is necessary to keep the result of a mathematical expression instead of the captcha code.
 
+Main structure captcha package:
+
+```go
+    type Captcha struct {
+        Driver Driver
+    }
+```
+
+A separate driver is used for each captcha module with the main functions *DrawCaptcha* and *GenerateIdQuestionAnswer*
+
+```go
+    func (d *DriverDigit) DrawCaptcha(content string) (item Item, err error) {
+        itemDigit := NewItemDigit(d.Width, d.Height, d.DotCount, d.MaxSkew)
+        digits := stringToFakeByte(content)
+
+        itemDigit.calculateSizes(d.Width, d.Height, len(digits))
+        maxx := d.Width - (itemDigit.width+itemDigit.dotSize)*len(digits) - itemDigit.dotSize
+        maxy := d.Height - itemDigit.height - itemDigit.dotSize*2
+
+        var border int
+
+        if d.Width > d.Height {
+            border = d.Height / 5
+        } else {
+            border = d.Width / 5
+        }
+
+        x := rand.Intn(maxx-border*2) + border
+        y := rand.Intn(maxy-border*2) + border
+
+        for _, n := range digits {
+            itemDigit.drawDigit(digitFontData[n], x, y)
+            x += itemDigit.width + itemDigit.dotSize
+        }
+
+        itemDigit.strikeThrough()
+        itemDigit.distort(rand.Float64()*(10-5)+5, rand.Float64()*(200-100)+100)
+        itemDigit.fillWithCircles(d.DotCount, itemDigit.dotSize)
+
+        return itemDigit, nil
+    }
+```
+```go
+    func (d *DriverString) DrawCaptcha(content string) (item Item, err error) {
+
+        var bgc color.RGBA
+
+        if d.BgColor != nil {
+            bgc = *d.BgColor
+        } else {
+            bgc = RandLightColor()
+        }
+
+        itemChar := NewItemChar(d.Width, d.Height, bgc)
+
+        if d.ShowLineOptions&OptionShowHollowLine == OptionShowHollowLine {
+            itemChar.drawHollowLine()
+        }
+
+        if d.ShowLineOptions&OptionShowSlimeLine == OptionShowSlimeLine {
+            itemChar.drawSlimLine(3)
+        }
+
+        if d.ShowLineOptions&OptionShowSineLine == OptionShowSineLine {
+            itemChar.drawSineLine()
+        }
+
+        if d.NoiseCount > 0 {
+            source := TxtNumbers + TxtAlphabet + ",.[]<>"
+            noise := RandText(d.NoiseCount, strings.Repeat(source, d.NoiseCount))
+            err = itemChar.drawNoise(noise, d.fontsArray)
+            if err != nil {
+                return
+            }
+        }
+
+        err = itemChar.drawText(content, d.fontsArray)
+        if err != nil {
+            return
+        }
+
+        return itemChar, nil
+    }
+```
+
+```go
+    func (d *DriverMath) DrawCaptcha(question string) (item Item, err error) {
+        var bgc color.RGBA
+        if d.BgColor != nil {
+            bgc = *d.BgColor
+        } else {
+            bgc = RandLightColor()
+        }
+        itemChar := NewItemChar(d.Width, d.Height, bgc)
+
+        if d.ShowLineOptions&OptionShowHollowLine == OptionShowHollowLine {
+            itemChar.drawHollowLine()
+        }
+
+        if d.NoiseCount > 0 {
+            noise := RandText(d.NoiseCount, strings.Repeat(TxtNumbers, d.NoiseCount))
+            err = itemChar.drawNoise(noise, fontsAll)
+            if err != nil {
+                return
+            }
+        }
+
+        if d.ShowLineOptions&OptionShowSlimeLine == OptionShowSlimeLine {
+            itemChar.drawSlimLine(3)
+        }
+
+        if d.ShowLineOptions&OptionShowSineLine == OptionShowSineLine {
+            itemChar.drawSineLine()
+        }
+
+        err = itemChar.drawText(question, d.fontsArray)
+        if err != nil {
+            return
+        }
+        return itemChar, nil
+    }
+
+```
 ## Screenshots
 
 #### **Root URL**

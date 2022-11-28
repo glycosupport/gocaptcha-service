@@ -68,7 +68,7 @@ func (cs *CaptchaStore) GenerateCaptcha(addr string) (*CaptchaData, error) {
 
 	driver := captcha.DefaultDriverDigit
 
-	c := captcha.NewCaptcha(driver, captcha.DefaultMemStore)
+	c := captcha.NewCaptcha(driver)
 	id, b64, answer, res, err := c.Generate()
 
 	if err != nil {
@@ -112,7 +112,7 @@ func (cs *CaptchaStore) GenerateCustomCaptcha(addr string, data *CaptchaRequest)
 		return nil, errors.New("incorrect mode generate")
 	}
 
-	c := captcha.NewCaptcha(driver, captcha.DefaultMemStore)
+	c := captcha.NewCaptcha(driver)
 	id, b64, answer, res, err := c.Generate()
 
 	if err != nil {

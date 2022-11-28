@@ -44,24 +44,6 @@ func NewDriverMath(height int, width int, noiseCount int, showLineOptions int, b
 	return &DriverMath{Height: height, Width: width, NoiseCount: noiseCount, ShowLineOptions: showLineOptions, fontsArray: tfs, BgColor: bgColor, Fonts: fonts}
 }
 
-func (d *DriverMath) ConvertFonts() *DriverMath {
-	if d.fontsStorage == nil {
-		d.fontsStorage = DefaultEmbeddedFonts
-	}
-
-	tfs := []*truetype.Font{}
-	for _, fff := range d.Fonts {
-		tf := d.fontsStorage.LoadFontByName(fff)
-		tfs = append(tfs, tf)
-	}
-	if len(tfs) == 0 {
-		tfs = fontsAll
-	}
-	d.fontsArray = tfs
-
-	return d
-}
-
 func (d *DriverMath) GenerateIdQuestionAnswer() (id, question, answer string) {
 	id = RandomId()
 	operators := []string{"+", "-", "x"}

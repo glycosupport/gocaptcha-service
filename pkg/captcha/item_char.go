@@ -20,10 +20,9 @@ import (
 )
 
 type ItemChar struct {
-	bgColor color.Color
-	width   int
-	height  int
-	nrgba   *image.NRGBA
+	width  int
+	height int
+	nrgba  *image.NRGBA
 }
 
 func NewItemChar(w int, h int, bgColor color.RGBA) *ItemChar {

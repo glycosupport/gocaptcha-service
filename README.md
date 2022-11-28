@@ -217,7 +217,10 @@ A separate driver is used for each captcha module with the main functions *DrawC
 
 - **Module digits**
 
-
+    - First, a random position for the captcha is generated
+    - Each digit is being drawn
+    - Noise is applied using distortion lines
+    - Filling with noise in the form of circles according to a given parameter
 
 ```go
 func (d *DriverDigit) DrawCaptcha(content string) (item Item, err error) {
@@ -252,6 +255,10 @@ func (d *DriverDigit) DrawCaptcha(content string) (item Item, err error) {
 }
 ```
 - **Module string**
+    - First, a random position for the captcha is generated
+    - Each digit is being drawn
+    - Noise is applied using distortion lines
+    - Filling with noise in the form of circles according to a given parameter
 
 ```go
 func (d *DriverString) DrawCaptcha(content string) (item Item, err error) {
@@ -296,6 +303,9 @@ func (d *DriverString) DrawCaptcha(content string) (item Item, err error) {
 }
 ```
 - **Module math**
+
+    - Same methods are used as in the "string" module
+    - Logic of calculating a mathematical expression
 
 ```go
 func (d *DriverMath) DrawCaptcha(question string) (item Item, err error) {

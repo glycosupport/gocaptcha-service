@@ -46,25 +46,6 @@ func NewDriverString(height int, width int, noiseCount int, showLineOptions int,
 	return &DriverString{Height: height, Width: width, NoiseCount: noiseCount, ShowLineOptions: showLineOptions, Length: length, Source: source, BgColor: bgColor, fontsStorage: fontsStorage, fontsArray: tfs, Fonts: fonts}
 }
 
-func (d *DriverString) ConvertFonts() *DriverString {
-	if d.fontsStorage == nil {
-		d.fontsStorage = DefaultEmbeddedFonts
-	}
-
-	tfs := []*truetype.Font{}
-	for _, fff := range d.Fonts {
-		tf := d.fontsStorage.LoadFontByName(fff)
-		tfs = append(tfs, tf)
-	}
-	if len(tfs) == 0 {
-		tfs = fontsAll
-	}
-
-	d.fontsArray = tfs
-
-	return d
-}
-
 func (d *DriverString) GenerateIdQuestionAnswer() (id, content, answer string) {
 	id = RandomId()
 	content = strings.ToLower(RandText(d.Length, d.Source))

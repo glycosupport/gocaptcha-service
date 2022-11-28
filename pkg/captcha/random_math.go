@@ -1,7 +1,6 @@
 package captcha
 
 import (
-	"encoding/binary"
 	"image/color"
 	"math"
 	"math/rand"
@@ -81,16 +80,6 @@ func randIntRange(from, to int) int {
 
 func randFloat64Range(from, to float64) float64 {
 	return rand.Float64()*(to-from) + from
-}
-
-func randBytes(n int) []byte {
-	numBlocks := (n + 8 - 1) / 8
-	b := make([]byte, numBlocks*8)
-	for i := 0; i < len(b); i += 8 {
-
-		binary.LittleEndian.PutUint64(b[i:], rand.Uint64())
-	}
-	return b[:n]
 }
 
 func RandomId() string {

@@ -69,7 +69,7 @@ Response:
 
 #### Generate custom captcha
 
-```http
+```
   POST /custom/
 ```
 
@@ -99,7 +99,7 @@ Response:
 
 #### Get captcha image
 
-```http
+```
   GET /:name
 ```
 
@@ -107,7 +107,7 @@ Example: http://localhost:8080/5a5e1f5ecc6d0b8ac4443172561d8acb.png
 
 #### Verify captcha
 
-```http
+```
   POST /verify/
 ```
 
@@ -126,7 +126,7 @@ Response:
 
 #### Remove captcha from server
 
-```http
+```
   POST /remove/:name
 ```
 
@@ -135,11 +135,29 @@ Example: http://localhost:8080/remove/5a5e1f5ecc6d0b8ac4443172561d8acb.png
 
 ## Description
 
+- Use case
+
 ![Main Frame](https://raw.githubusercontent.com/glycosupport/gocaptcha-service/dev/screenshots/frame.png)
 
 
+    To generate a custom captcha, you can go to the root URL 
+    Or use POST request with the parameters specified above
 
-![Gin Requests](https://raw.githubusercontent.com/glycosupport/gocaptcha-service/dev/screenshots/frame.png)
+```
+  http://IP:PORT/custom/
+```
+
+
+
+![Gin Requests](https://raw.githubusercontent.com/glycosupport/gocaptcha-service/dev/screenshots/gin.png)
+
+
+- Captcha generation method
+
+| String    | Digits    | Math      |
+| :-------- | :-------- | :-------- |
+
+
 
 
 ## Tech Stack

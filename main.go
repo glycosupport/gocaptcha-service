@@ -9,11 +9,8 @@ import (
 
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/glycosupport/gocaptcha-service/docs"
 	"github.com/glycosupport/gocaptcha-service/pkg/store"
 	"github.com/glycosupport/gocaptcha-service/pkg/utils"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 var addr string
@@ -125,11 +122,6 @@ func (cs *captchaServer) removeCaptchaHandler(c *gin.Context) {
 
 func main() {
 
-	docs.SwaggerInfo.Title = "GO-CAPTHCA SERVICE API"
-	docs.SwaggerInfo.Description = "Captcha generation service"
-	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Schemes = []string{"http"}
-
 	file, err := os.OpenFile("logs/common.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
@@ -164,8 +156,6 @@ func main() {
 
 	router.GET("/generate", server.generateCaptchaHandler)
 	router.GET("/:name", server.getCaptchaHandler)
-
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.Run(addr)
 }

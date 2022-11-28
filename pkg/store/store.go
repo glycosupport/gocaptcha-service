@@ -99,12 +99,6 @@ func (cs *CaptchaStore) GenerateCustomCaptcha(addr string, data *CaptchaRequest)
 
 	var driver captcha.Driver
 
-	driver = captcha.NewDriverString(
-		data.Height, data.Width, data.Noise,
-		data.Lines, data.Length,
-		data.Source, &color.RGBA{uint8(data.Bg.R), uint8(data.Bg.G),
-			uint8(data.Bg.B), uint8(data.Bg.A)}, nil, data.Fonts)
-
 	switch data.Mode {
 	case "string":
 		driver = captcha.NewDriverString(data.Height, data.Width, data.Noise, data.Lines, data.Length,

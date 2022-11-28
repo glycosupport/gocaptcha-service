@@ -1,7 +1,6 @@
 package captcha
 
 import (
-	"fmt"
 	"image/color"
 	"strings"
 
@@ -76,13 +75,12 @@ func (d *DriverString) DrawCaptcha(content string) (item Item, err error) {
 
 	var bgc color.RGBA
 
-	fmt.Println(*d.BgColor)
-
 	if d.BgColor != nil {
 		bgc = *d.BgColor
 	} else {
 		bgc = RandLightColor()
 	}
+
 	itemChar := NewItemChar(d.Width, d.Height, bgc)
 
 	if d.ShowLineOptions&OptionShowHollowLine == OptionShowHollowLine {

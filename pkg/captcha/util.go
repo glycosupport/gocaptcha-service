@@ -15,6 +15,7 @@ func parseDigitsToString(bytes []byte) string {
 	}
 	return string(stringB)
 }
+
 func stringToFakeByte(content string) []byte {
 	digits := make([]byte, len(content))
 	for idx, cc := range content {

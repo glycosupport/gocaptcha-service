@@ -3,6 +3,7 @@ package store
 import (
 	"bufio"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"image/color"
 	"os"
@@ -30,6 +31,7 @@ type Bg struct {
 }
 
 type CaptchaRequest struct {
+	Mode   string   `json;type`
 	Length int      `json:length`
 	Noise  int      `json:noise`
 	Lines  int      `json:lines`
@@ -38,6 +40,8 @@ type CaptchaRequest struct {
 	Fonts  []string `json:fonts`
 	Bg     Bg       `json:bg`
 	Source string   `json:source`
+	Skew   float64  `json:skew`
+	Dots   int      `json:dots`
 }
 
 func New() *CaptchaStore {
@@ -48,10 +52,7 @@ func New() *CaptchaStore {
 
 func (cs *CaptchaStore) VerifyCaptcha(hash string, code string) bool {
 
-	fmt.Println(hash, code)
-
 	if val, ok := cs.captchas[hash]; ok {
-		fmt.Printf("%s %s\n", val.Code, code)
 
 		if val.Code == code {
 			return true
@@ -60,17 +61,12 @@ func (cs *CaptchaStore) VerifyCaptcha(hash string, code string) bool {
 		}
 	}
 
-	fmt.Println("NOT LOAD")
-
 	return false
 }
 
 func (cs *CaptchaStore) GenerateCaptcha(addr string) (*CaptchaData, error) {
 
-	driver := captcha.NewDriverString(
-		captcha.DefaultHeight, captcha.DefaultWidth, captcha.DefaultNoiseCount,
-		captcha.DefaultShowLine, captcha.DefaultLength,
-		captcha.DefaultSource, &color.RGBA{0, 0, 0, 0}, nil, []string{"vogue.ttf"})
+	driver := captcha.DefaultDriverDigit
 
 	c := captcha.NewCaptcha(driver, captcha.DefaultMemStore)
 	id, b64, answer, res, err := c.Generate()
@@ -101,14 +97,26 @@ func (cs *CaptchaStore) GenerateCaptcha(addr string) (*CaptchaData, error) {
 
 func (cs *CaptchaStore) GenerateCustomCaptcha(addr string, data *CaptchaRequest) (*CaptchaData, error) {
 
-	driver := captcha.NewDriverString(
+	var driver captcha.Driver
+
+	driver = captcha.NewDriverString(
 		data.Height, data.Width, data.Noise,
 		data.Lines, data.Length,
-		captcha.DefaultSource, &color.RGBA{uint8(data.Bg.R), uint8(data.Bg.G),
+		data.Source, &color.RGBA{uint8(data.Bg.R), uint8(data.Bg.G),
 			uint8(data.Bg.B), uint8(data.Bg.A)}, nil, data.Fonts)
 
-	fmt.Println(&color.RGBA{uint8(data.Bg.R), uint8(data.Bg.G),
-		uint8(data.Bg.B), uint8(data.Bg.A)})
+	switch data.Mode {
+	case "string":
+		driver = captcha.NewDriverString(data.Height, data.Width, data.Noise, data.Lines, data.Length,
+			data.Source, &color.RGBA{uint8(data.Bg.R), uint8(data.Bg.G), uint8(data.Bg.B), uint8(data.Bg.A)}, nil, data.Fonts)
+	case "digits":
+		driver = captcha.NewDriverDigit(data.Height, data.Width, data.Length, float64(data.Skew), data.Dots)
+	case "math":
+		driver = captcha.NewDriverMath(data.Height, data.Width, data.Noise, data.Lines,
+			&color.RGBA{uint8(data.Bg.R), uint8(data.Bg.G), uint8(data.Bg.B), uint8(data.Bg.A)}, nil, data.Fonts)
+	default:
+		return nil, errors.New("incorrect mode generate")
+	}
 
 	c := captcha.NewCaptcha(driver, captcha.DefaultMemStore)
 	id, b64, answer, res, err := c.Generate()
@@ -130,8 +138,8 @@ func (cs *CaptchaStore) GenerateCustomCaptcha(addr string, data *CaptchaRequest)
 	_, err = res.WriteTo(f)
 
 	URL := "http://" + addr + "/" + hash + ".png"
-	returnValue := &CaptchaData{Id: id, Code: answer, URL: URL}
-	cs.captchas[id] = returnValue
+	returnValue := &CaptchaData{Id: id, Code: answer, URL: URL, Hash: hash}
+	cs.captchas[hash] = returnValue
 
 	return returnValue, err
 }

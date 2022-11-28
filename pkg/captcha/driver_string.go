@@ -68,7 +68,7 @@ func (d *DriverString) ConvertFonts() *DriverString {
 
 func (d *DriverString) GenerateIdQuestionAnswer() (id, content, answer string) {
 	id = RandomId()
-	content = RandText(d.Length, d.Source)
+	content = strings.ToLower(RandText(d.Length, d.Source))
 	return id, content, content
 }
 

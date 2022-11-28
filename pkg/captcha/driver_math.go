@@ -33,7 +33,7 @@ func NewDriverMath(height int, width int, noiseCount int, showLineOptions int, b
 
 	tfs := []*truetype.Font{}
 	for _, fff := range fonts {
-		tf := fontsStorage.LoadFontByName("fonts/" + fff)
+		tf := fontsStorage.LoadFontByName(fff)
 		tfs = append(tfs, tf)
 	}
 
@@ -51,7 +51,7 @@ func (d *DriverMath) ConvertFonts() *DriverMath {
 
 	tfs := []*truetype.Font{}
 	for _, fff := range d.Fonts {
-		tf := d.fontsStorage.LoadFontByName("fonts/" + fff)
+		tf := d.fontsStorage.LoadFontByName(fff)
 		tfs = append(tfs, tf)
 	}
 	if len(tfs) == 0 {

@@ -1,13 +1,14 @@
 package main
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/glycosupport/gocaptcha-service/docs"
 	"github.com/glycosupport/gocaptcha-service/pkg/store"
@@ -28,15 +29,7 @@ func NewCaptchaServer() *captchaServer {
 
 func (cs *captchaServer) generateCaptchaHandler(c *gin.Context) {
 
-	ip := utils.GetLocalIP()
-
-	if len(ip) == 0 {
-		ip = "localhost"
-	}
-
-	ip += ":8080" // port
-
-	data, err := cs.store.GenerateCaptcha(ip)
+	data, err := cs.store.GenerateCaptcha(addr)
 
 	if err != nil {
 		c.String(http.StatusBadRequest, err.Error())
@@ -47,14 +40,6 @@ func (cs *captchaServer) generateCaptchaHandler(c *gin.Context) {
 }
 
 func (cs *captchaServer) generateCustomCaptchaHandler(c *gin.Context) {
-
-	ip := utils.GetLocalIP()
-
-	if len(ip) == 0 {
-		ip = "localhost"
-	}
-
-	ip += ":8080" // port
 
 	jsonData, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
@@ -70,14 +55,14 @@ func (cs *captchaServer) generateCustomCaptchaHandler(c *gin.Context) {
 
 	fmt.Println(request)
 
-	data, err := cs.store.GenerateCustomCaptcha(ip, &request)
+	data, err := cs.store.GenerateCustomCaptcha(addr, &request)
 
 	if err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"code": data.Code, "captcha": data.URL})
+	c.JSON(http.StatusOK, gin.H{"code": data.Code, "captcha": data.URL, "hash": data.Hash})
 }
 
 func (cs *captchaServer) verifyCaptchaHandler(c *gin.Context) {
@@ -101,10 +86,8 @@ func (cs *captchaServer) verifyCaptchaHandler(c *gin.Context) {
 
 	if cs.store.VerifyCaptcha(request.Hash, request.Code) {
 		c.JSON(http.StatusOK, gin.H{"verify": "true"})
-		fmt.Println("VERIFY TRUE")
 	} else {
 		c.JSON(http.StatusOK, gin.H{"verify": "false"})
-		fmt.Println("VERIFY FALSE")
 	}
 }
 
@@ -123,47 +106,69 @@ func (cs *captchaServer) getCaptchaHandler(c *gin.Context) {
 	c.Data(200, "text/html; charset=utf-8", []byte(returnValue))
 }
 
-func (cs *captchaServer) getStaticHandler(c *gin.Context) {
-	file, err := os.Open("./static/index.html")
+func (cs *captchaServer) removeCaptchaHandler(c *gin.Context) {
 
+	type RequestRemove struct {
+		Hash string `json:hash`
+	}
+
+	jsonData, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
-	defer file.Close()
 
-	stats, statsErr := file.Stat()
-	if statsErr != nil {
-		c.String(http.StatusBadRequest, err.Error())
-		return
-	}
+	defer c.Request.Body.Close()
 
-	var size int64 = stats.Size()
-	bytes := make([]byte, size)
+	var request RequestRemove
 
-	bufr := bufio.NewReader(file)
-	_, err = bufr.Read(bytes)
+	json.Unmarshal(jsonData, &request)
 
-	c.Data(200, "text/html; charset=utf-8", []byte(bytes))
 }
 
 func main() {
 
 	docs.SwaggerInfo.Title = "GO-CAPTHCA SERVICE API"
-	docs.SwaggerInfo.Description = "Captcha generation service."
+	docs.SwaggerInfo.Description = "Captcha generation service"
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Schemes = []string{"http"}
+
+	file, err := os.OpenFile("logs/common.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.SetOutput(file)
 
 	router := gin.Default()
 	server := NewCaptchaServer()
 
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	router.GET("/", server.getStaticHandler)
+	ip := os.Getenv("IP")
+	port := os.Getenv("PORT")
+
+	if ip == "" {
+		log.Println("IP address not set, local is used")
+		ip = utils.GetLocalIP()
+	}
+
+	if port == "" {
+		log.Println("PORT not set, 8080 is used")
+		port = "8080"
+	}
+
+	addr = ip + ":" + port
+
+	router.Use(static.Serve("/", static.LocalFile("./client/", true)))
+	router.StaticFile("/favicon.ico", "./assets/favicon.ico")
+
 	router.POST("/custom", server.generateCustomCaptchaHandler)
 	router.POST("/verify", server.verifyCaptchaHandler)
+	router.POST("/remove/:name", server.removeCaptchaHandler)
+
 	router.GET("/generate", server.generateCaptchaHandler)
-	router.StaticFile("/favicon.ico", "./assets/favicon.ico")
 	router.GET("/:name", server.getCaptchaHandler)
 
-	router.Run()
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	router.Run(addr)
 }

@@ -14,7 +14,7 @@ func NewDriverDigit(height int, width int, length int, maxSkew float64, dotCount
 	return &DriverDigit{Height: height, Width: width, Length: length, MaxSkew: maxSkew, DotCount: dotCount}
 }
 
-var DefaultDriverDigit = NewDriverDigit(80, 240, 5, 0.7, 80)
+var DefaultDriverDigit = NewDriverDigit(80, 240, 6, 0.7, 80)
 
 func (d *DriverDigit) GenerateIdQuestionAnswer() (id, q, a string) {
 	id = RandomId()

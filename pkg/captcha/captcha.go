@@ -1,7 +1,5 @@
 package captcha
 
-import "strings"
-
 // Captcha основная стркутура пакета
 type Captcha struct {
 	Driver Driver
@@ -20,17 +18,11 @@ func (c *Captcha) Generate() (id, b64, answer string, item Item, err error) {
 	if err != nil {
 		return "", "", "", nil, err
 	}
-	err = c.Store.Set(id, answer)
+
 	if err != nil {
 		return "", "", "", nil, err
 	}
+
 	b64 = item.EncodeB64string()
 	return
-}
-
-func (c *Captcha) Verify(id, answer string, clear bool) (match bool) {
-	vv := c.Store.Get(id, clear)
-
-	vv = strings.TrimSpace(vv)
-	return vv == strings.TrimSpace(answer)
 }

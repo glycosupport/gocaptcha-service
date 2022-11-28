@@ -521,6 +521,18 @@ button:hover {
 
 /* fonts */
 
+
+a {
+    text-decoration: none;
+    color: black;
+    transition: 1s;
+}
+
+a:hover {
+    color: #00c47f;
+    transition: 1s;
+}
+
 @media screen and (max-width: 1280px) {
     .circles {
         display: none;

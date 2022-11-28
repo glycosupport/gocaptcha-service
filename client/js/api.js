@@ -1,5 +1,5 @@
 let config = {
-    type: "string",
+    mode: "string",
     length: 6,
     noise: 0,
     lines: 3,
@@ -15,9 +15,11 @@ let config = {
         a: 0
     },
     source: "ABCDEFGHJKMNOQRSTUVXYZabcdefghjkmnoqrstuvxyz123456789",
-    maxSkew: 0,
-    dotCount: 0,
+    skew: 0,
+    dots: 0,
 }
+
+let currentHash = 0
 
 getCustom()
 
@@ -25,11 +27,14 @@ function getCustom() {
     var xmlHttp = new XMLHttpRequest()
     xmlHttp.open("POST", "/custom/", false)
     xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    console.log(JSON.stringify(config))
     xmlHttp.send(JSON.stringify(config))
 
     const obj = JSON.parse(xmlHttp.responseText)
     const url = obj.captcha
+    currentHash = obj.hash
+
+    document.querySelector("#captcha-path a").textContent = obj.hash
+    document.querySelector("#captcha-path a").href = url
 
     xmlHttp.open("GET", url, false)
     xmlHttp.send(null)
@@ -42,20 +47,24 @@ function generate() {
 }
 
 function verify() {
-
-}
-
-function apply() {
     var xmlHttp = new XMLHttpRequest()
     xmlHttp.open("POST", "/verify/", false)
     xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
     let data = {
-        hash: "853246c42318b623509d37e27cf0c836",
-        code: "mvzkhr"
+        hash: currentHash,
+        code: document.querySelector('.captcha-form #input-form').value
     }
 
     xmlHttp.send(JSON.stringify(data))
+
+    const obj = JSON.parse(xmlHttp.responseText)
+
+    if (obj.verify == "true") {
+        alert("Verification has passed")
+    } else {
+        alert("Verification failed")
+    }
 }
 
 function changeMenu() {
@@ -103,11 +112,11 @@ function rangeHeight(newVal) {
 }
 
 function rangeSkew(newVal) {
-    config.maxSkew = +newVal
+    config.skew = +newVal
     getCustom()
 }
 
 function rangeDots(newVal) {
-    config.dotCount = +newVal
+    config.dots = +newVal
     getCustom()
 }

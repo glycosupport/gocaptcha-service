@@ -17,12 +17,3 @@ const (
 	OptionShowSlimeLine  = 4
 	OptionShowSineLine   = 8
 )
-
-const (
-	DefaultHeight     = 60
-	DefaultWidth      = 240
-	DefaultNoiseCount = 0
-	DefaultShowLine   = 3
-	DefaultLength     = 6
-	DefaultSource     = TxtAlphabet
-)

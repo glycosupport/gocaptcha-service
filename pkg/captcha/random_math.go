@@ -78,9 +78,11 @@ func randIntRange(from, to int) int {
 	}
 	return rand.Intn(to-from) + from
 }
+
 func randFloat64Range(from, to float64) float64 {
 	return rand.Float64()*(to-from) + from
 }
+
 func randBytes(n int) []byte {
 	numBlocks := (n + 8 - 1) / 8
 	b := make([]byte, numBlocks*8)

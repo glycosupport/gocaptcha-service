@@ -7,6 +7,8 @@ Captcha generation and verification service in Go
 
 - [Run Locally](https://github.com/glycosupport/gocaptcha-service#run-locally)
 
+- [Docker Images](https://github.com/glycosupport/gocaptcha-service#docker-images)
+
 - [API Reference](https://github.com/glycosupport/gocaptcha-service#api-reference)
 
 - [Description](https://github.com/glycosupport/gocaptcha-service#description)
@@ -53,6 +55,19 @@ Open with a browser
    http://IP:PORT/
 ```
 
+## Docker Images
+
+#### Build development image:
+
+```bash
+   sudo docker build -t gocaptcha-service .
+```
+
+#### Run container:
+
+```bash
+   sudo docker run -it --rm gocaptcha-service
+```
 
 ## API Reference
 

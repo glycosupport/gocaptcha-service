@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -52,8 +51,6 @@ func (cs *captchaServer) generateCustomCaptchaHandler(c *gin.Context) {
 	var request store.CaptchaRequest
 
 	json.Unmarshal(jsonData, &request)
-
-	fmt.Println(request)
 
 	data, err := cs.store.GenerateCustomCaptcha(addr, &request)
 

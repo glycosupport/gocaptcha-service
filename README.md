@@ -255,10 +255,10 @@ func (d *DriverDigit) DrawCaptcha(content string) (item Item, err error) {
 }
 ```
 - **Module string**
-    - First, a random position for the captcha is generated
-    - Each digit is being drawn
-    - Noise is applied using distortion lines
-    - Filling with noise in the form of circles according to a given parameter
+    - Set width and height for captcha and characters
+    - Drawing noise for the specified parameters [hollow line, slime line, sime line]
+    - Drawing noise for the background in the form of white symbols
+    - Drawing content
 
 ```go
 func (d *DriverString) DrawCaptcha(content string) (item Item, err error) {

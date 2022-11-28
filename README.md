@@ -11,6 +11,8 @@ Captcha generation and verification service in Go
 
 - [Description](https://github.com/glycosupport/gocaptcha-service#description)
 
+- [Screenshots](https://github.com/glycosupport/gocaptcha-service#screenshots)
+
 - [Tech Stack](https://github.com/glycosupport/gocaptcha-service#tech-stack)
 
 ## Installation
@@ -56,7 +58,7 @@ Open with a browser
 
 #### Generate default captcha
 
-```http
+```
   GET /generate/
 ```
 
@@ -135,30 +137,68 @@ Example: http://localhost:8080/remove/5a5e1f5ecc6d0b8ac4443172561d8acb.png
 
 ## Description
 
-- Use case
+Text captchas are the most commonly used, but because of their simple structure, they are also the most vulnerable. This type of captcha, as a rule, requires recognizing a geometrically distorted sequence consisting of letters or numbers.
+
+To increase security, various protection mechanisms are used, which can be divided into anti-segmentation and anti-identification. The first group of mechanisms is aimed at worsening the process of highlighting individual characters, the second – at recognizing the characters themselves.
+
+Methods of protection:
+
+[Anti-Segmentation]
+
+- Hollow symbols
+
+- CCT and overlap
+
+- Background noise
+
+- Two-level structure
+
+
+[Anti-identification]
+
+- Random fonts
+
+- Random turns
+
+- Wavelike symbols
+
+- Various languages
+
+This service uses bundles of various methods.
+
+The following security methods are used in the "string" module:
+
+- Background noises [generating different lines and backgrounds from random characters]
+
+- Random fonts
+
+- Random text length
+
+
+The following security methods are used in the "digits" module:
+
+- CCT and overlap
+
+- Background noise
+
+- Hollow symbols
+
+- Wavelike symbols
+
+- Random turns
+
+
+The "math" module uses the same security methods as the "string" module. For additional protection, a method is used where it is necessary to keep the result of a mathematical expression instead of the captcha code.
+
+## Screenshots
+
+#### **Root URL**
 
 ![Main Frame](https://raw.githubusercontent.com/glycosupport/gocaptcha-service/dev/screenshots/frame.png)
 
-
-    To generate a custom captcha, you can go to the root URL 
-    Or use POST request with the parameters specified above
-
-```
-  http://IP:PORT/custom/
-```
-
-
+### **GIN Requests**
 
 ![Gin Requests](https://raw.githubusercontent.com/glycosupport/gocaptcha-service/dev/screenshots/gin.png)
-
-
-- Captcha generation method
-
-| String    | Digits    | Math      |
-| :-------- | :-------- | :-------- |
-
-
-
 
 ## Tech Stack
 

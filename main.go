@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -115,6 +116,20 @@ func (cs *captchaServer) removeCaptchaHandler(c *gin.Context) {
 }
 
 func main() {
+
+	if _, err := os.Stat("./captchas/"); os.IsNotExist(err) {
+		if err := os.Mkdir("./captchas/", 0777); err != nil {
+			fmt.Printf("%v", err)
+			return
+		}
+	}
+
+	if _, err := os.Stat("./logs/"); os.IsNotExist(err) {
+		if err := os.Mkdir("./logs/", 0777); err != nil {
+			fmt.Printf("%v", err)
+			return
+		}
+	}
 
 	file, err := os.OpenFile("logs/common.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
